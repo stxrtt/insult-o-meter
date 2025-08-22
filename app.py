@@ -6,12 +6,19 @@ from flask_bootstrap import Bootstrap
 import simplejson as json
 import requests
 import random
-import variables
+import os
+from dotenv import load_dotenv
 
-apikey = variables.apikey
+# Load environment variables from .env if present
+load_dotenv()
+
+apikey = os.getenv("PI_API_KEY", "")
+if not apikey:
+    # Warn in logs; continue so the developer notices missing key
+    print("[WARN] PI_API_KEY is not set. API calls requiring authorization will fail.")
 
 header = {
-    'Authorization' : "Key {}".format(apikey)
+    'Authorization': f"Key {apikey}" if apikey else ""
 }
 
 
